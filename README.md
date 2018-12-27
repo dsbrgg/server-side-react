@@ -88,3 +88,5 @@ Running React on a server is **very slow** so the way to maintain performance th
 
 * Bundle #2 - `webpack.client.js`
   * Shipped down to the browser
+
+There is need for some level of segregation because if the client side has imports from the server side bundle, it will lead to exploits(eg. API keys, private routes, etc).
