@@ -67,4 +67,11 @@ Using *SSR* we can cut most of this diagram out of the picture. The focus for us
 | -------- end -------- |
 ```
 
-The **API server** will come from a boiler plate code but the **rendering server** will be built from scratch. This architecture will give better insight on why SSR is useful. By leaving the business logic(DB access; validation; auth; logging) to the API server and only consuming that on the rendering server, makes it flexible enough in case the rendering server transitions to a Angular application, for example.
+The **API server** will come from a boiler plate code but the **rendering server** will be built from scratch. This architecture will give better insight on why SSR is useful. 
+
+By leaving the business logic(DB access; validation; auth; logging) to the API server and only consuming that on the rendering server, makes it flexible enough in case the rendering server transitions to a Angular application, for example.
+
+Running React on a server is **very slow** so the way to maintain performance the architecture chosen will make it easier to scale the app by upgrading the instances of the rendering server(and in case of heavy traffic, the API server can be upgraded as well).
+
+- [Article about SSR performance](https://medium.com/walmartlabs/using-electrode-to-improve-react-server-side-render-performance-by-up-to-70-e43f9494eb8b)
+
