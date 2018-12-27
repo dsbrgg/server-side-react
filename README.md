@@ -1,6 +1,7 @@
 ### Setup
 
 - `npm run dev:build:server`
+- `npm run dev:build:client`
 - `npm run dev:server`
 
 ## Why SSR
@@ -79,3 +80,11 @@ By leaving the business logic(DB access; validation; auth; logging) to the API s
 Running React on a server is **very slow** so the way to maintain performance the architecture chosen will make it easier to scale the app by upgrading the instances of the rendering server(and in case of heavy traffic, the API server can be upgraded as well).
 
 - [Article about SSR performance](https://medium.com/walmartlabs/using-electrode-to-improve-react-server-side-render-performance-by-up-to-70-e43f9494eb8b)
+
+## Bundling
+
+* Bundle #1 - `webpack.server.js`
+  * Used to run code on our backend
+
+* Bundle #2 - `webpack.client.js`
+  * Shipped down to the browser
