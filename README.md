@@ -45,3 +45,26 @@ Using *SSR* we can cut most of this diagram out of the picture. The focus for us
 +
 ```
 
+## App Architecture
+
+```
+| ------- flow -------- |
+| ------- begin ------- |
+|                       |
+|      API Server       |
+|    (Business Logic)   |
+|           |           |
+|           |           |
+|           |           |
+|    Rendering Server   |
+|      (React App)      |
+|           |           |
+|           |           |
+|           |           |
+|    Users Browser      |
+|                       |
+| ------- flow -------- |
+| -------- end -------- |
+```
+
+The **API server** will come from a boiler plate code but the **rendering server** will be built from scratch. This architecture will give better insight on why SSR is useful. By leaving the business logic(DB access; validation; auth; logging) to the API server and only consuming that on the rendering server, makes it flexible enough in case the rendering server transitions to a Angular application, for example.
