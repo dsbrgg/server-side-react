@@ -88,3 +88,11 @@ Running React on a server is **very slow** so the way to maintain performance th
   * Shipped down to the browser
 
 There is need for some level of segregation because if the client side has imports from the server side bundle, it will lead to exploits(eg. API keys, private routes, etc).
+
+## Challenges using Redux on SSR
+
+* Redux needs a different configuration on browser vs server
+  * All following issues feed into this one
+- Aspects of authentication needs to be handled on the server. Normally this is only on browser
+- Need some way to detect when all initial data load action creators are completed
+- Need state rehydration on the browser

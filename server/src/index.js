@@ -2,6 +2,7 @@ import express from 'express'
 import renderer from './helpers/renderer'
 
 const app = express()
+// https://react-ssr-api.herokuapp.com
 
 app.use(express.static('public'))
 
