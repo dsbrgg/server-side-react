@@ -113,12 +113,17 @@ app.get('*', function (req, res) {
 
   // with this function, it's possible to know which components
   // will be rendered, given a particular URL
-  (0, _reactRouterConfig.matchRoutes)(_Routes2.default, req.path).map(function (_ref) {
+  var promises = (0, _reactRouterConfig.matchRoutes)(_Routes2.default, req.path).map(function (_ref) {
     var route = _ref.route;
-    return route.loadData ? route.loadData() : null;
+
+    return route.loadData ? route.loadData(store) : null;
   });
 
-  res.send((0, _renderer2.default)(req, store));
+  // after this promise.all, the store will be filled with 
+  // all the data fetched from the API
+  Promise.all(promises).then(function () {
+    res.send((0, _renderer2.default)(req, store));
+  });
 });
 
 app.listen(3000, function () {
@@ -491,8 +496,8 @@ var mapStateToProps = function mapStateToProps(state) {
   return { users: state.users };
 };
 
-var loadData = function loadData() {
-  console.log('ola :)');
+var loadData = function loadData(store) {
+  return store.dispatch((0, _actions.fetchUsers)());
 };
 
 exports.loadData = loadData;

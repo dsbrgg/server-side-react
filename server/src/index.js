@@ -16,9 +16,15 @@ app.get('*', (req, res) => {
 
   // with this function, it's possible to know which components
   // will be rendered, given a particular URL
-  matchRoutes(Routes, req.path).map(({ route }) => route.loadData ? route.loadData() : null)
+  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
+    return route.loadData ? route.loadData(store) : null
+  })
 
-  res.send(renderer(req, store))
+  // after this promise.all, the store will be filled with 
+  // all the data fetched from the API
+  Promise.all(promises).then(() => {
+    res.send(renderer(req, store))
+  })
 })
 
 app.listen(3000, () => {
