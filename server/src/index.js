@@ -16,7 +16,7 @@ app.get('*', (req, res) => {
 
   // with this function, it's possible to know which components
   // will be rendered, given a particular URL
-  matchRoutes(Routes, req.path)
+  matchRoutes(Routes, req.path).map(({ route }) => route.loadData ? route.loadData() : null)
 
   res.send(renderer(req, store))
 })
