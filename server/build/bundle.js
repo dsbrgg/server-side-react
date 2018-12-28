@@ -88,6 +88,12 @@ var _express = __webpack_require__(3);
 
 var _express2 = _interopRequireDefault(_express);
 
+var _reactRouterConfig = __webpack_require__(21);
+
+var _Routes = __webpack_require__(6);
+
+var _Routes2 = _interopRequireDefault(_Routes);
+
 var _renderer = __webpack_require__(4);
 
 var _renderer2 = _interopRequireDefault(_renderer);
@@ -99,12 +105,16 @@ var _createStore2 = _interopRequireDefault(_createStore);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
-// https://react-ssr-api.herokuapp.com
 
 app.use(_express2.default.static('public'));
 
 app.get('*', function (req, res) {
   var store = (0, _createStore2.default)();
+
+  // with this function, it's possible to know which components
+  // will be rendered, given a particular URL
+  (0, _reactRouterConfig.matchRoutes)(_Routes2.default, req.path);
+
   res.send((0, _renderer2.default)(req, store));
 });
 
