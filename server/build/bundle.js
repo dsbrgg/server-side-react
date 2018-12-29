@@ -205,8 +205,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = (0, _express2.default)();
 
 app.use('/api', (0, _expressHttpProxy2.default)('http://react-ssr-api.herokuapp.com', {
+  // this is all needed just for this example with this api
   proxyReqOptDecorator: function proxyReqOptDecorator(opts) {
-    opts.header['x-forwarded-hot'] = 'localhost:3000';
+    opts.headers['x-forwarded-host'] = 'localhost:3000';
     return opts;
   }
 }));
@@ -214,7 +215,7 @@ app.use('/api', (0, _expressHttpProxy2.default)('http://react-ssr-api.herokuapp.
 app.use(_express2.default.static('public'));
 
 app.get('*', function (req, res) {
-  var store = (0, _createStore2.default)();
+  var store = (0, _createStore2.default)(req);
 
   // with this function, it's possible to know which components
   // will be rendered, given a particular URL
@@ -374,7 +375,12 @@ exports.default = {
 };
 
 /***/ }),
-/* 11 */,
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("axios");
+
+/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -448,11 +454,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(5);
+var _axios = __webpack_require__(11);
+
+var _axios2 = _interopRequireDefault(_axios);
 
 var _reduxThunk = __webpack_require__(16);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+var _redux = __webpack_require__(5);
 
 var _reducers = __webpack_require__(17);
 
@@ -460,8 +470,13 @@ var _reducers2 = _interopRequireDefault(_reducers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function () {
-  return (0, _redux.createStore)(_reducers2.default, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+exports.default = function (req) {
+  var api = _axios2.default.create({
+    baseURL: "http://react-ssr-api.herokuapp.com",
+    headers: { cookie: req.get('cookie') || '' }
+  });
+
+  return (0, _redux.createStore)(_reducers2.default, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default.withExtraArgument(api)));
 };
 
 /***/ }),

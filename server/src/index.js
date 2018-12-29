@@ -11,8 +11,9 @@ import createStore from './helpers/createStore'
 const app = express()
 
 app.use('/api', proxy('http://react-ssr-api.herokuapp.com', {
+  // this is all needed just for this example with this api
   proxyReqOptDecorator(opts) {
-    opts.header['x-forwarded-hot'] = 'localhost:3000'
+    opts.headers['x-forwarded-host'] = 'localhost:3000'
     return opts
   }
 }))
@@ -20,7 +21,7 @@ app.use('/api', proxy('http://react-ssr-api.herokuapp.com', {
 app.use(express.static('public'))
 
 app.get('*', (req, res) => {
-  const store = createStore()
+  const store = createStore(req)
 
   // with this function, it's possible to know which components
   // will be rendered, given a particular URL
