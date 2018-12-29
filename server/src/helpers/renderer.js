@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { renderRoutes } from 'react-router-config'
+import serialize from 'serialize-javascript'
 
 import Routes from '../client/Routes'
 
@@ -21,7 +22,9 @@ export default (req, store) => {
       <body>
         <div id="root">${content}</div>
         <script>
-          window.INITIAL_STATE = ${JSON.stringify(store.getState())}
+          // serialize is used to prevent from XSS attacks
+          // it will change special characters to their unicode equivalent
+          window.INITIAL_STATE = ${serialize(store.getState())}
         </script>
         <script src="bundle.js"></script>
       </body>
